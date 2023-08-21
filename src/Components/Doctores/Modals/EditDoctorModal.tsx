@@ -25,7 +25,7 @@ interface editDoctorProps {
   }
   
   const EditDoctor: React.FC<editDoctorProps> = ({ closeModal, selectedDoctor  }) => {
-    const { register, handleSubmit, formState } = useForm<DoctorFormData>();
+    const { register, handleSubmit } = useForm<DoctorFormData>();
     const dispatch=useDispatch<AppDispatch>()
 
     const initialValues: DoctorFormData = {
@@ -37,7 +37,7 @@ interface editDoctorProps {
       const onSubmit = async (data: DoctorFormData) => {
         try {
             console.log(data);
-            const { name, lastname, speciality, id } = data;
+            const { name, lastname, speciality} = data;
           const response = await dispatch(
             putDoctors({
               id:initialValues.id,
