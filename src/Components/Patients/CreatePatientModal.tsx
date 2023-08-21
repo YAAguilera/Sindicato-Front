@@ -2,21 +2,22 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { GrClose } from 'react-icons/gr';
 
-interface CreateAppointmentProps {
+interface CreatePatientProps {
   closeModal: () => void;
 }
 
-interface AppointmentFormData {
+interface PatientFormData {
     DNI: number;
-    Doctor: string;
-    fecha: string; 
-    hora: string;
+    Nombre: string
+    Apellido: string
+    Telefono: number;
+    ObraSocial: string
 }
 
-const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => {
-  const { register, handleSubmit, formState } = useForm<AppointmentFormData>();
+const CreatePatient: React.FC<CreatePatientProps> = ({ closeModal }) => {
+  const { register, handleSubmit, formState } = useForm<PatientFormData>();
 
-  const onSubmit: SubmitHandler<AppointmentFormData> = (data) => {
+  const onSubmit: SubmitHandler<PatientFormData> = (data) => {
     console.log(data);
     closeModal();
   };
@@ -29,12 +30,13 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
           <GrClose/>
           </button>
         </div>
-        <h1 className="font-extrabold text-2xl font-serif text-white">Crear Turno</h1>
+        <h1 className="font-extrabold text-2xl font-serif text-white">Crear Paciente</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <input type="text" {...register('DNI')} placeholder=" DNI" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <input type="text" {...register('Doctor')} placeholder=" Doctor" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <input type="text" {...register('fecha')} placeholder=" Fecha" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <input type="text" {...register('hora')} placeholder=" Hora" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+          <input type="text" {...register('Nombre')} placeholder=" Nombre" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+          <input type="text" {...register('Apellido')} placeholder=" Apellido" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+          <input type="text" {...register('Telefono')} placeholder=" Teléfono" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+          <input type="text" {...register('ObraSocial')} placeholder=" Obra social" className="p-1 rounded-lg bg-lightGray placeholder-black" />
           <button
             type="submit"
             disabled={formState.isSubmitting}
@@ -48,4 +50,4 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
   );
 }
 
-export default CreateAppointment;
+export default CreatePatient;
