@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getPatients } from '../Services/patients';
+import { getPatients, postPatient, deletePatient, putPatients } from '../Services/patients';
 
 interface Patient {
     id: number;
     name: string;
     lastname: string;
-    cel: number;
+    cel: string;
     insurance: string;
   }
 
@@ -29,6 +29,27 @@ const patientSlice = createSlice({
       .addCase(getPatients.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Error desconocido';
+      })
+      .addCase(postPatient.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(postPatient.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        if (Array.isArray(action.payload)) {
+          state.patients = state.patients.concat(action.payload);
+        } else {
+          state.patients = state.patients.concat([action.payload]);
+        }
+      })
+      .addCase(postPatient.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Error desconocido';
+      })
+      .addCase(deletePatient.fulfilled, (state)=>{
+        state.status='fulfilled'
+      })
+      .addCase(putPatients.fulfilled, (state)=>{
+        state.status='fulfilled'
       })
     },
 });

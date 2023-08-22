@@ -25,7 +25,13 @@ interface editDoctorProps {
   }
   
   const EditDoctor: React.FC<editDoctorProps> = ({ closeModal, selectedDoctor  }) => {
-    const { register, handleSubmit } = useForm<DoctorFormData>();
+    const { register, handleSubmit, trigger } = useForm<DoctorFormData>();
+
+    const handleBlur = (fieldName: any) => {
+      trigger(fieldName);
+    };
+  
+
     const dispatch=useDispatch<AppDispatch>()
 
     const initialValues: DoctorFormData = {
@@ -72,9 +78,24 @@ interface editDoctorProps {
       </div>
       <h1 className="font-extrabold text-2xl font-serif text-white">Editar Doctor</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        <input type="text" {...register('name')} defaultValue={initialValues.name} className="p-1 rounded-lg bg-lightGray placeholder-black" />
-        <input type="text" {...register('lastname')} defaultValue={initialValues.lastname} className="p-1 rounded-lg bg-lightGray placeholder-black" />
-        <input type="text" {...register('speciality')} defaultValue={initialValues.speciality} className="p-1 rounded-lg bg-lightGray placeholder-black" />
+        <input type="text"  defaultValue={initialValues.name} className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('name', {
+           required: 'Este campo es obligatorio'
+          }) 
+        }
+        onBlur={() => handleBlur('name')}
+        />
+        <input type="text"  defaultValue={initialValues.lastname} className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('lastname', {
+           required: 'Este campo es obligatorio'
+          }) 
+        }
+        onBlur={() => handleBlur('lastname')}
+        />
+        <input type="text"  defaultValue={initialValues.speciality} className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('speciality', {
+           required: 'Este campo es obligatorio'
+          }) 
+        }
+        onBlur={() => handleBlur('speciality')}
+        />
         <button
         
            type="submit"
