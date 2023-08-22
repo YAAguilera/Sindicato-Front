@@ -1,25 +1,42 @@
 import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { GrClose } from 'react-icons/gr';
+import { useDispatch } from 'react-redux';
+import { postPatient } from '../../Features/Services/patients';
+import { AppDispatch } from '../../Features/store/store';
 
 interface CreatePatientProps {
   closeModal: () => void;
 }
 
 interface PatientFormData {
-    DNI: number;
-    Nombre: string
-    Apellido: string
-    Telefono: number;
-    ObraSocial: string
+    id: number;
+    name: string
+    lastname: string
+    cel: string;
+    insurance: string
 }
 
 const CreatePatient: React.FC<CreatePatientProps> = ({ closeModal }) => {
-  const { register, handleSubmit, formState } = useForm<PatientFormData>();
+  const { register, handleSubmit, formState, formState: { errors }, trigger } = useForm<PatientFormData>();
+  const handleBlur = (fieldName: any) => {
+    trigger(fieldName);
+  };
+  
+  const dispatch=useDispatch<AppDispatch>()
 
-  const onSubmit: SubmitHandler<PatientFormData> = (data) => {
-    console.log(data);
+  //Post
+  const onSubmit= async (formData: PatientFormData) => {
+    try {
+     console.log("form data post",formData);
+     
+      // Llama a la acción postPatient a través de Redux Toolkit
+    const response =  await dispatch(postPatient(formData));
+    console.log(response);
     closeModal();
+    } catch (error) {
+      console.error('Error al crear paciente:', error);
+    }
   };
 
   return (
@@ -32,11 +49,82 @@ const CreatePatient: React.FC<CreatePatientProps> = ({ closeModal }) => {
         </div>
         <h1 className="font-extrabold text-2xl font-serif text-white">Crear Paciente</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <input type="text" {...register('DNI')} placeholder=" DNI" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <input type="text" {...register('Nombre')} placeholder=" Nombre" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <input type="text" {...register('Apellido')} placeholder=" Apellido" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <input type="text" {...register('Telefono')} placeholder=" Teléfono" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <input type="text" {...register('ObraSocial')} placeholder=" Obra social" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+          <input type="number" placeholder=" DNI" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('id', {
+             required: 'Este campo es obligatorio',
+             pattern: {
+              value: /^[0-9]{8,11}$/,
+              message: 'Ingrese un DNI válido',
+            },
+          }) 
+        }
+        onBlur={() => handleBlur('id')}
+        />
+         {errors.id ? (
+                <span className='text-red-500 text-xs text-center '>{errors.id.message}</span>
+              ) : (
+                <></>
+              )}
+
+          <input type="text" placeholder=" Nombre" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('name', {
+             required: 'Este campo es obligatorio',
+             pattern: {
+              value: /^[a-zA-Z\s]+$/,
+              message: 'Solo se aceptan letras',
+            },
+          }) 
+        }
+        onBlur={() => handleBlur('name')}
+        />
+         {errors.name ? (
+                <span className='text-red-500 text-xs text-center '>{errors.name.message}</span>
+              ) : (
+                <></>
+              )}
+          <input type="text"  placeholder=" Apellido" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('lastname', {
+             required: 'Este campo es obligatorio',
+             pattern: {
+              value: /^[a-zA-Z\s]+$/,
+              message: 'Solo se aceptan letras',
+            },
+          }) 
+        }
+        onBlur={() => handleBlur('lastname')}
+        />
+         {errors.lastname ? (
+                <span className='text-red-500 text-xs text-center '>{errors.lastname.message}</span>
+              ) : (
+                <></>
+              )}
+
+          <input type="tel" placeholder=" Teléfono" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('cel',{
+            pattern: {
+              value: /^[0-9]+$/,
+              message: 'Ingrese un número válido',
+            },
+          }) 
+        }
+        onBlur={() => handleBlur('cel')}
+        />
+         {errors.cel ? (
+                <span className='text-red-500 text-xs text-center '>{errors.cel.message}</span>
+              ) : (
+                <></>
+              )}
+          <input type="text" placeholder=" Obra social" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('insurance', {
+             required: 'Este campo es obligatorio',
+             pattern: {
+              value: /^[a-zA-Z\s]+$/,
+              message: 'Solo se aceptan letras',
+            },
+          }) 
+        }
+        onBlur={() => handleBlur('insurance')}
+        />
+         {errors.insurance ? (
+                <span className='text-red-500 text-xs text-center '>{errors.insurance.message}</span>
+              ) : (
+                <></>
+              )}
           <button
             type="submit"
             disabled={formState.isSubmitting}
