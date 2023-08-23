@@ -81,16 +81,26 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
             alphabeticalPatients.map((patient: any) => {
               return (
                 <article key={patient.id} className='w-full flex flex-row justify-between items-center align-middle h-[2em] bg-lightGray p-7 text-center '>
-                  <h1 className='text-md font-semibold font-serif '>{patient.lastname} {patient.name}</h1>
-                  <h1 className='text-md font-semibold font-serif '>{patient.id} </h1>
-                  <h1 className='text-md font-semibold font-serif '>{patient.cel}</h1>
-                  <h1 className='text-md font-semibold font-serif '>{patient.insurance}</h1>
+                  <h1 className='font-semibold font-serif xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs'>{patient.lastname} {patient.name}</h1>
+                  <h1 className='xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs font-semibold font-serif '>{patient.id} </h1>
+                  <h1 className='xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs font-semibold font-serif '>{patient.cel}</h1>
+                  <h1 className='xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs font-semibold font-serif '>{patient.insurance}</h1>
                   <div className=''>
                     <button >
-                      <TiPencil className='text-2xl text-black' onClick={() => handleEdit(patient)} />
+                      <TiPencil className=' text-black xxl:text-4xl
+                xl:text-3xl
+                lg:text-2xl
+                md:text-xl
+                sm:text-2xl' onClick={() => handleEdit(patient)} />
                     </button>
                     <button >
-                      <TiDelete onClick={() => handleDelete(patient.id)} className='text-2xl text-red-800' />
+                      <TiDelete onClick={() => handleDelete(patient.id)} className='text-red-800
+                      xxl:text-4xl
+                      xl:text-3xl
+                      lg:text-2xl
+                      md:text-xl
+                      sm:text-2xl
+                      ' />
                     </button>
                   </div>
                 </article>

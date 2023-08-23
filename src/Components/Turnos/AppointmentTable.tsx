@@ -20,29 +20,59 @@ const AppointmentTable: React.FC = () => {
     setIsGetPatsModalOpen(!isGetPatsModalOpen); // Cambia el estado del modal de creación de pacientes
   };
   return (
-    <main className="flex flex-col justify-center items-center align-middle gap-4">
-      <h1 className="font-extrabold text-4xl font-serif text-darkBlue">Turnos</h1>
+    <main className="flex flex-col justify-center items-center align-middle gap-4 
+    xxl:w-[70%] 
+    xl:w-[70%]
+    lg:w-[70%]
+    md:w-[70%]
+    sm:w-full
+    ">
+      <h1 className="font-extrabold font-serif text-darkBlue 
+      xxl:text-6xl
+      xl:text-5xl
+      lg:text-4xl
+      md:text-3xl
+      sm:text-3xl
+      ">Turnos</h1>
       <section>tabla de turnos</section>
       <section className="flex flex-row gap-5 justify-center items-center align-middle">
       <button
           onClick={toggleGetPatsModal}
-          className="p-2 bg-darkBlue rounded-xl text-white font-serif font-semibold
-            transition-all duration-500 ease-in-out hover:transform hover:scale-110 hover:bg-lightBlue"
+          className=" bg-darkBlue rounded-xl text-white font-serif font-semibold
+            transition-all duration-500 ease-in-out hover:transform hover:scale-110 hover:bg-lightBlue
+            xxl:p-2 xxl:text-2xl
+            xl:p-2 xl:text-xl
+            lg:p-2 lg:text-md
+            md:p-2 md:text-xs
+            sm:p-1 sm:text-xs
+            "
         >
           Ver Pacientes
         </button>
         <button
           onClick={togglePatientModal} 
-          className="p-2 bg-darkBlue rounded-xl text-white font-serif font-semibold
-            transition-all duration-500 ease-in-out hover:transform hover:scale-110 hover:bg-lightBlue"
+          className="bg-darkBlue rounded-xl text-white font-serif font-semibold
+            transition-all duration-500 ease-in-out hover:transform hover:scale-110 hover:bg-lightBlue
+            xxl:p-2 xxl:text-2xl
+            xl:p-2 xl:text-xl
+            lg:p-2 lg:text-md
+            md:p-2 md:text-xs
+            sm:p-1 sm:text-xs
+            "
         >
           Crear paciente
         </button>
 
         <button
           onClick={toggleModal}
-          className="p-2 bg-darkBlue rounded-xl text-white font-serif font-semibold
-            transition-all duration-500 ease-in-out hover:transform hover:scale-110 hover:bg-lightBlue"
+          className=" bg-darkBlue rounded-xl text-white font-serif font-semibold
+            transition-all duration-500 ease-in-out hover:transform hover:scale-110 hover:bg-lightBlue
+            xxl:p-2 xxl:text-2xl
+            xl:p-2 xl:text-xl
+            lg:p-2 lg:text-md
+            md:p-2 md:text-xs
+            sm:p-1 sm:text-xs
+            "
         >
           Crear turno
         </button>
