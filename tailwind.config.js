@@ -10,12 +10,11 @@ export default {
         darkGray: '#8B8C89'
       },
       screens: {
-        xs: "0px", //0 a 639
-        sm: "640px", // 640 a 767
-        md: "768px", //768 a 1023
+        sm: "320px", // 425 a 767
+        md: "600px", //768 a 1023
         lg: "1024px", //1024 a 1279
-        xl: "1280px", //1280 a 1882
-        xxl: "1883px", 
+        xl: "1280px", //1280 a 1
+        xxl: "1440px", 
       },
     },
   },
