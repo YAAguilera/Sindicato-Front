@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getDoctors, postDoctors, deleteDoctors, putDoctors } from '../Services/doctors';
-
+import Swal from 'sweetalert2'
 interface Doctor {
   id: string;
   name: string;
@@ -34,6 +34,22 @@ const doctorSlice = createSlice({
       })
       .addCase(postDoctors.fulfilled, (state, action) => {
         state.status = 'succeeded';
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: "success",
+          title: "Doctor creado con éxito!",
+        });
         if (Array.isArray(action.payload)) {
           state.doctors = state.doctors.concat(action.payload);
         } else {
@@ -46,9 +62,41 @@ const doctorSlice = createSlice({
       })
       .addCase(deleteDoctors.fulfilled, (state)=>{
         state.status='fulfilled'
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: "success",
+          title: "Doctor eliminado con éxito!",
+        });
       })
       .addCase(putDoctors.fulfilled, (state)=>{
         state.status='fulfilled'
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: "success",
+          title: "Doctor modificado con éxito!",
+        });
       })
   },
 });

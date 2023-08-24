@@ -8,6 +8,7 @@ import { AppDispatch, RootState } from '../../Features/store/store';
 import { getPatients, deletePatient } from '../../Features/Services/patients';
 import { TiDelete, TiPencil } from "react-icons/ti";
 import EditPatient from './EditPatientModal';
+import Swal from 'sweetalert2'
 
 interface CreatePatientProps {
   closeModal: () => void;
@@ -42,11 +43,22 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
   //delete
   const handleDelete = async (id: number) => {
     try {
-     const response = await dispatch(deletePatient({id}));
-     console.log(response);
+      const result = await Swal.fire({
+        title:
+          "¿Estás seguro que quieres eliminar este paciente? Esta acción no se puede deshacer.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+      });
+      if (result.isConfirmed) {
+        const response = await dispatch(deletePatient({id}));
+        console.log(response);
     if(response.type === 'patients/deletePatient/fulfilled'){
         await dispatch(getPatients()) 
     }
+      }  
     } catch (error) {
       console.error("Error deleting patient:", error);
     }

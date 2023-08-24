@@ -5,6 +5,7 @@ import { getDoctors, deleteDoctors } from '../../Features/Services/doctors';
 import { AppDispatch, RootState } from '../../Features/store/store';
 import { TiDelete, TiPencil } from "react-icons/ti";
 import EditDoctor from './Modals/EditDoctorModal';
+import Swal from 'sweetalert2';
 
 export interface Doctor {
   id: string;
@@ -42,10 +43,21 @@ const DoctorTable: React.FC = () => {
   //delete
   const handleDelete = async (id: string) => {
     try {
-     const response = await dispatch(deleteDoctors({id}));
-     console.log(response);
-    if(response.type === 'doctor/deleteDoctors/fulfilled'){
-        await dispatch(getDoctors()) 
+      const result = await Swal.fire({
+        title:
+          "¿Estás seguro que quieres eliminar este doctor? Esta acción no se puede deshacer.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+      });
+      if (result.isConfirmed) {
+        const response = await dispatch(deleteDoctors({id}));
+        console.log(response);
+       if(response.type === 'doctor/deleteDoctors/fulfilled'){
+           await dispatch(getDoctors()) 
+      } 
     }
     } catch (error) {
       console.error("Error deleting doctor:", error);
