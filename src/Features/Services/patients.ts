@@ -65,7 +65,7 @@ export const getPatients = createAsyncThunk<Patient[], void, { rejectValue: stri
     async ( {id, name, lastname, cel, insurance } , { rejectWithValue }) => {
       try {
         const response = await axios.put<Patient[]>(
-          `https://sindicato-back-35yh-sist-dev.fl0.io/atients/${id}`,{
+          `https://sindicato-back-35yh-sist-dev.fl0.io/patients/${id}`,{
             id, name, lastname, cel, insurance
           }
         );

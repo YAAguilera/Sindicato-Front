@@ -76,3 +76,23 @@ export const deleteAppointments = createAsyncThunk<Appointment[], {  id: string 
     }
   }
 ); 
+
+export const putAppointment = createAsyncThunk<Appointment[], { id: string, doctorId: string, fecha: string; hora: string }, { rejectValue: string }>(
+  'Appointment/putAppointment',
+  async ( { id, doctorId, fecha, hora} , { rejectWithValue }) => {
+    try {
+      console.log(id);
+      
+      const response = await axios.put<Appointment[]>(
+        `https://sindicato-back-35yh-sist-dev.fl0.io/appointments/${id}`,{
+          doctorId, fecha, hora
+        }
+      );
+      console.log(response);
+      
+      return response.data; 
+    } catch (error) {
+      return rejectWithValue('No se pudo editar');
+    }
+  }
+); 
