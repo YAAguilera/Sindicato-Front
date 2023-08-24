@@ -8,6 +8,7 @@ import { getAppointments, deleteAppointments } from '../../Features/Services/app
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../Features/store/store';
 import { useSelector } from 'react-redux';
+import EditAppointment from './Modals/EditAppointment.Modal';
 
 
 interface Doctor {
@@ -77,6 +78,17 @@ const AppointmentTable: React.FC = () => {
     }
   };
 
+  //edit
+  const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+
+  const toggleModalEdit = () => {
+    setIsModalOpenEdit(!isModalOpenEdit);
+  };
+  const handleEdit = (appointment: Appointment) => {
+    setSelectedAppointment(appointment);
+    toggleModalEdit();
+  };
   return (
     <main className="flex flex-col justify-center items-center align-middle gap-4
     xxl:w-[70%] 
@@ -117,7 +129,8 @@ const AppointmentTable: React.FC = () => {
                 xl:text-3xl
                 lg:text-2xl
                 md:text-xl
-                sm:text-2xl'/>
+                sm:text-2xl'
+                onClick={() => handleEdit(appointment)}/>
                     </button>
                     <button >
                       <FcCheckmark onClick={() => handleDelete(appointment.id)} className='xxl:text-4xl
@@ -125,7 +138,7 @@ const AppointmentTable: React.FC = () => {
                       lg:text-2xl
                       md:text-xl
                       sm:text-2xl
-                      transition-all duration-500 ease-in-out hover:transform hover:scale-125
+                      transition-all duration-500 ease-in-out hover:transform hover:scale-125 
                       ' />
                     </button>
                   </div>
@@ -179,7 +192,7 @@ const AppointmentTable: React.FC = () => {
       {isModalOpen && <CreateAppointment closeModal={toggleModal} />}
       {isPatientModalOpen && <CreatePatient closeModal={togglePatientModal} />} 
       {isGetPatsModalOpen && <AllPatientsComponent closeModal={toggleGetPatsModal}/>} 
-
+      {isModalOpenEdit && <EditAppointment closeModal={toggleModalEdit} selectedAppointment={selectedAppointment} />}
     </main>
   );
 }

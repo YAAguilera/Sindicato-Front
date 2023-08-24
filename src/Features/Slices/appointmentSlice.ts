@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAppointments, postAppointment, deleteAppointments } from '../Services/appointment';
+import { getAppointments, postAppointment, deleteAppointments, putAppointment } from '../Services/appointment';
 
 
 interface Doctor {
@@ -64,6 +64,9 @@ const appointmentSlice = createSlice({
         state.error = action.payload || 'Error desconocido';
       })
       .addCase(deleteAppointments.fulfilled, (state)=>{
+        state.status='fulfilled'
+      })
+      .addCase(putAppointment.fulfilled, (state)=>{
         state.status='fulfilled'
       })
   },
