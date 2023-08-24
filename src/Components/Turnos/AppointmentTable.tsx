@@ -8,6 +8,7 @@ import { getAppointments, deleteAppointments } from '../../Features/Services/app
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../Features/store/store';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 
 interface Doctor {
@@ -67,10 +68,22 @@ const AppointmentTable: React.FC = () => {
   //delete
   const handleDelete = async (id: string) => {
     try {
-     const response = await dispatch(deleteAppointments({id}));
-     console.log(response);
-    if(response.type === 'Appointment/deleteAppointments/fulfilled'){
-        await dispatch(getAppointments()) 
+
+      const result = await Swal.fire({
+        title:
+          "¿Estás seguro que quieres eliminar este turno? Esta acción no se puede deshacer.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+      });
+      if (result.isConfirmed) {
+        const response = await dispatch(deleteAppointments({id}));
+        console.log(response);
+        if(response.type === 'Appointment/deleteAppointments/fulfilled'){
+          await dispatch(getAppointments()) 
+      }
     }
     } catch (error) {
       console.error("Error deleting patient:", error);
@@ -78,32 +91,32 @@ const AppointmentTable: React.FC = () => {
   };
 
   return (
-    <main className="flex flex-col justify-center items-center align-middle gap-4
+    <main className="flex flex-col h-full justify-center items-center align-middle
     xxl:w-[70%] 
     xl:w-[70%]
     lg:w-[70%]
     md:w-[70%]
     sm:w-full
-    ">      
-      <section className='bg-lightGray w-full h-full rounded-xl'> 
-        <div className='flex flex-col justify-center items-center bg-lightBlue w-full rounded-t-lg
-        xxl:h-[5em]
-        xl:h-[4em]
-        lg:h-[3em]
-        md:h-[3em]
-        sm:h-[3em]
-        '>
-          <h1 className="font-extrabold font-serif text-darkBlue
-           xxl:text-6xl
-           xl:text-5xl
-           lg:text-4xl
-           md:text-3xl
-           sm:text-3xl
-          ">Turnos</h1>
-        </div>
-        <section className='overflow-y-scroll flex flex-col gap-2 items-center align-middle'>
+    ">      <div className='flex flex-col  justify-center items-center bg-lightBlue w-full rounded-t-lg
+    xxl:h-[5em]
+    xl:h-[4em]
+    lg:h-[3em]
+    md:h-[3em]
+    sm:h-[3em]
+    '>
+      <h1 className="font-extrabold font-serif text-darkBlue
+       xxl:text-6xl
+       xl:text-5xl
+       lg:text-4xl
+       md:text-3xl
+       sm:text-3xl
+      ">Turnos</h1>
+    </div>
+      <section className='bg-lightGray w-full h-[87%] overflow-y-scroll  rounded-b-xl'> 
+        
+        <section className=' flex  flex-col p-2 gap-2 items-center align-middle'>
         {sortedAppointments.map(appointment => (
-            <article key={appointment.id} className='w-full flex flex-row justify-between items-center align-middle h-[2em] bg-darkGray p-7 text-center '>
+            <article key={appointment.id} className='w-full flex flex-row justify-between items-center align-middle h-[2em] bg-white rounded-xl p-7 text-center '>
               <h1>{appointment.Paciente?.lastname} {appointment.Paciente?.name}</h1>
               <h1>{appointment.Paciente?.insurance}</h1>
               <div className='flex flex-col'>
@@ -134,7 +147,7 @@ const AppointmentTable: React.FC = () => {
         </section>
   </section>
 
-      <section className="flex flex-row gap-5 justify-center items-center align-middle">
+      <section className="flex flex-row gap-5 mt-2 justify-center items-center align-middle">
       <button
           onClick={toggleGetPatsModal}
           className=" bg-darkBlue rounded-xl text-white font-serif font-semibold

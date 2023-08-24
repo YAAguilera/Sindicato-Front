@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from '../../Features/store/store';
 import { TiDelete, TiPencil } from "react-icons/ti";
 import EditDoctor from './Modals/EditDoctorModal';
 import Swal from 'sweetalert2';
+import { getPatients } from '../../Features/Services/patients';
 
 export interface Doctor {
   id: string;
@@ -38,6 +39,7 @@ const DoctorTable: React.FC = () => {
    console.log("doctor table doctors",doctors)
   useEffect(() => {
     dispatch(getDoctors());
+    dispatch(getPatients())
   }, [dispatch]);
 
   //delete
@@ -65,7 +67,7 @@ const DoctorTable: React.FC = () => {
   };
   
   return (
-    <main className="flex flex-col justify-center items-center align-middle gap-2 p-1 
+    <main className="flex flex-col justify-center h-full  items-center align-middle gap-2 p-1 
     xxl:w-[30%]
     xl:w-[30%]
     lg:w-[30%]
@@ -73,7 +75,7 @@ const DoctorTable: React.FC = () => {
     sm:w-full
     ">
       {/* tabla */}
-      <section className='w-[100%] h-[100%] rounded-xl bg-lightGray flex flex-col items-center'>
+      <section className='w-[100%] h-[90%] rounded-xl bg-lightGray flex flex-col items-center'>
       <div className='w-[100%] rounded-t-xl bg-lightBlue flex justify-center items-center
       xxl:h-[5em]
       xl:h-[4em]
@@ -81,7 +83,7 @@ const DoctorTable: React.FC = () => {
       md:h-[3em]
       sm:h-[3em]
       '>
-        <h1 className="font-extrabold font-serif text-darkBlue
+        <h1 className="font-extrabold py-1 font-serif text-darkBlue
          xxl:text-6xl
          xl:text-5xl
          lg:text-4xl
@@ -89,11 +91,11 @@ const DoctorTable: React.FC = () => {
          sm:text-3xl
         ">Doctores</h1>
       </div>
-      <div className='overflow-y-scroll w-full flex flex-col items-center gap-2 p-1'>
+      <div className='overflow-y-scroll   w-full flex flex-col items-center gap-2 p-1'>
       {doctors && doctors.length>0 ?(
         doctors.map((doctor:any)=>{
           return(
-            <article key={doctor.id} className='bg-darkGray rounded-xl w-[100%] flex flex-row justify-center items-center 
+            <article key={doctor.id} className='bg-white rounded-xl w-[100%] flex flex-row justify-center items-center 
             xxl:gap-8
             xl:gap-8
             lg:gap-8
