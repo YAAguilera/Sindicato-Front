@@ -123,7 +123,7 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
              required: 'Este campo es obligatorio'}
           )} placeholder=" Fecha" className="p-1 rounded-lg bg-lightGray placeholder-black" />
 
-          <input type="text" {...register('hora', 
+          <input type="time" {...register('hora', 
           {required: 'Este campo es obligatorio'}
           )} placeholder=" Hora" className="p-1 rounded-lg bg-lightGray placeholder-black" />
 
