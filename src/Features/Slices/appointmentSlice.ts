@@ -1,6 +1,6 @@
 import  Swal  from 'sweetalert2';
 import { createSlice } from '@reduxjs/toolkit';
-import { getAppointments, postAppointment, deleteAppointments, putAppointment } from '../Services/appointment';
+import { getAppointments, postAppointment, deleteAppointments, putAppointment, getAppointmentById } from '../Services/appointment';
 
 interface Doctor {
     id: string;
@@ -101,6 +101,9 @@ const appointmentSlice = createSlice({
       .addCase(putAppointment.fulfilled, (state)=>{
         state.status='fulfilled'
       })
+      .addCase(getAppointmentById.fulfilled, (state)=>{
+        state.status='fullfilled'
+      })      
   },
 });
 

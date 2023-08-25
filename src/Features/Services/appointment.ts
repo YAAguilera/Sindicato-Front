@@ -96,3 +96,21 @@ export const putAppointment = createAsyncThunk<Appointment[], { id: string, doct
     }
   }
 ); 
+
+export const getAppointmentById = createAsyncThunk<Appointment[], { id: string }, { rejectValue: string }>(
+  'Appointment/getAppointmentById',
+  async ( { id } , { rejectWithValue }) => {
+    try {
+      console.log(id);
+      
+      const response = await axios.get<Appointment[]>(
+        `https://sindicato-back-35yh-sist-dev.fl0.io/appointments/${id}`
+      );
+      console.log(response);
+      
+      return response.data; 
+    } catch (error) {
+      return rejectWithValue('No se pudo hacer el get');
+    }
+  }
+); 

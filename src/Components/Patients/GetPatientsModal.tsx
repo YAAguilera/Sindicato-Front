@@ -29,9 +29,11 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
   console.log("", patients);
   const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [placeholder, setPlaceholder]=useState("")
 
   useEffect(() => {
     dispatch(getPatients());
+    setPlaceholder("Buscar nombre/DNI")
   }, [dispatch]);
 
   const alphabeticalPatients = patients.slice().sort((a, b) => {
@@ -103,7 +105,7 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
           </div>
           <div className='flex flex-row gap-5 items-center justify-center'>
           <h1 className="font-extrabold text-4xl font-serif text-darkBlue ">Pacientes</h1>
-          <SearchBar searchTerm={searchTerm} onSearch={handleSearch}/>
+          <SearchBar searchTerm={searchTerm} onSearch={handleSearch} placeHolder={placeholder}/>
           </div>
         </div>
       <section className='bg-lightGray overflow-y-scroll w-full h-full rounded-b-xl'>
@@ -139,7 +141,7 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
               )
             })
           ) : (
-            <h1>Debes crear pacientes</h1>
+            <h1>No hay pacientes</h1>
           )}
         </section>
       </section>

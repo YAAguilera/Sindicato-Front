@@ -65,7 +65,7 @@ const CreateDoctor: React.FC<CreateDoctorProps> = ({ closeModal }) => {
           <input type="text"  placeholder=" Nombre" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('name', {
              required: 'Este campo es obligatorio',
              pattern: {
-              value: /^[a-zA-Z\s]+$/,
+              value: /^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ]+$/,
               message: 'Solo se aceptan letras',
             },
           }) 
@@ -80,7 +80,7 @@ const CreateDoctor: React.FC<CreateDoctorProps> = ({ closeModal }) => {
           <input type="text" placeholder=" Apellido" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('lastname', {
              required: 'Este campo es obligatorio',
              pattern: {
-              value: /^[a-zA-Z\s]+$/,
+              value: /^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ]+$/,
               message: 'Solo se aceptan letras',
             },
           }) 
@@ -99,7 +99,7 @@ const CreateDoctor: React.FC<CreateDoctorProps> = ({ closeModal }) => {
           <input type="text" placeholder=" Especialidad" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('speciality', {
              required: 'Este campo es obligatorio',
              pattern: {
-              value: /^[a-zA-Z\s]+$/,
+              value: /^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ]+$/,
               message: 'Solo se aceptan letras',
             },
           }) 

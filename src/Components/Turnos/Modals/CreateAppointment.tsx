@@ -125,7 +125,7 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
 
           <input type="time" {...register('hora', 
           {required: 'Este campo es obligatorio'}
-          )} placeholder=" Hora" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+          )} min='07:00' max='20:00' placeholder=" Hora" className="p-1 rounded-lg bg-lightGray placeholder-black" />
 
           <button
             type="submit"

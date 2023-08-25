@@ -4,11 +4,13 @@ import CreatePatient from '../Patients/CreatePatientModal';
 import AllPatientsComponent from '../Patients/GetPatientsModal';
 import { TiPencil } from "react-icons/ti";
 import { FcCheckmark } from "react-icons/fc";
+import { FiInfo } from "react-icons/fi";
 import { getAppointments, deleteAppointments } from '../../Features/Services/appointment';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../Features/store/store';
 import { useSelector } from 'react-redux';
 import EditAppointment from './Modals/EditAppointment.Modal';
+import AppointmentById from './Modals/DetailAppointmentModal';
 import Swal from 'sweetalert2';
 import SearchBar from '../Assets/SearchBar'
 
@@ -53,6 +55,7 @@ const AppointmentTable: React.FC = () => {
   const [isPatientModalOpen, setIsPatientModalOpen] = useState<boolean>(false); // Agrega un estado para el modal de creación de pacientes
   const [isGetPatsModalOpen, setIsGetPatsModalOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [placeholder, setPlaceholder]=useState("")
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -70,6 +73,7 @@ const AppointmentTable: React.FC = () => {
 
   useEffect(()=>{
     dispatch(getAppointments())
+    setPlaceholder("Buscar por nombre")
   }, [dispatch])
 
 
@@ -84,19 +88,20 @@ const AppointmentTable: React.FC = () => {
       ...appointment,
       formattedFecha: formatDate(appointment.fecha), // Add the formatted date property
     }));
-
+    
+    
 
     const handleSearch = (event:any) => {
       setSearchTerm(event.target.value);
     };
 
-    const filteredAppointments = sortedAppointments.filter((appointment) => {
+    const filteredAppointments = sortedAppointments?.filter((appointment) => {
       const searchTermLower = searchTerm.toLowerCase();
 
       // Comprobación de coincidencia en nombre y apellido del paciente
-      const paciente = appointment.Paciente;
-      const nameMatches = paciente.name.toLowerCase().includes(searchTermLower);
-      const lastnameMatches = paciente.lastname.toLowerCase().includes(searchTermLower);
+      const paciente = appointment?.Paciente;
+      const nameMatches = paciente?.name?.toLowerCase().includes(searchTermLower);
+      const lastnameMatches = paciente?.lastname?.toLowerCase().includes(searchTermLower);
     
       // Devuelve true si el nombre o el apellido coinciden
       return nameMatches || lastnameMatches;
@@ -135,13 +140,25 @@ const AppointmentTable: React.FC = () => {
   const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
 
+
   const toggleModalEdit = () => {
     setIsModalOpenEdit(!isModalOpenEdit);
   };
+
   const handleEdit = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
     toggleModalEdit();
   };
+
+
+  //detail
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState<string | null>(null);
+
+  const handleClickArticle = (appointmentId: string) => {
+    setSelectedAppointmentId(appointmentId);
+  };
+
+
   return (
     <main className="flex flex-col h-full justify-center items-center align-middle
     xxl:w-[70%] 
@@ -163,13 +180,17 @@ const AppointmentTable: React.FC = () => {
        md:text-3xl
        sm:text-3xl
       ">Turnos</h1>
-     <SearchBar searchTerm={searchTerm} onSearch={handleSearch}/>
+     <SearchBar searchTerm={searchTerm} onSearch={handleSearch} placeHolder={placeholder}/>
     </div>
       <section className='bg-lightGray w-full h-[87%] overflow-y-scroll  rounded-b-xl'> 
         
-        <section className=' flex  flex-col p-2 gap-2 items-center align-middle'>
-        {filteredAppointments.map(appointment => (
-            <article key={appointment.id} className='w-full flex flex-row justify-between items-center align-middle h-[2em] bg-white rounded-xl p-7 text-center '>
+        <section 
+        
+        className=' flex  flex-col p-2 gap-2 items-center align-middle'>
+        {sortedAppointments.map(appointment => (
+            <article
+            key={appointment.id} className='w-full flex flex-row justify-between items-center align-middle h-[2em] bg-white rounded-xl p-7 text-center'>
+              
               <h1 className='font-bold'>{appointment.Paciente?.lastname} {appointment.Paciente?.name}</h1>
               <h1 className='font-semibold'>{appointment.Paciente?.insurance}</h1>
               <div className='flex flex-col'>
@@ -177,9 +198,21 @@ const AppointmentTable: React.FC = () => {
               <h1 className='font-bold '>{appointment?.hora}</h1>
               </div>
               <h1 className='font-semibold'>{appointment?.Doctor?.name} {appointment.Doctor?.lastname}</h1>
+          
+              
               <div className='flex flex-row gap-3'>
+
+              <button >
+                      <FiInfo className=' text-lightBlue xxl:text-4xl
+                xl:text-3xl
+                lg:text-2xl
+                md:text-xl
+                sm:text-2xl'
+                onClick={() => handleClickArticle(appointment.id)}
+                />
+                    </button>
                     <button >
-                      <TiPencil className=' text-black xxl:text-4xl
+                      <TiPencil className=' text-darkBlue xxl:text-4xl
                 xl:text-3xl
                 lg:text-2xl
                 md:text-xl
@@ -246,7 +279,12 @@ const AppointmentTable: React.FC = () => {
       {isModalOpen && <CreateAppointment closeModal={toggleModal} />}
       {isPatientModalOpen && <CreatePatient closeModal={togglePatientModal} />} 
       {isGetPatsModalOpen && <AllPatientsComponent closeModal={toggleGetPatsModal}/>} 
-      {isModalOpenEdit && <EditAppointment closeModal={toggleModalEdit} selectedAppointment={selectedAppointment} />}
+      {isModalOpenEdit && selectedAppointment && (
+        <EditAppointment closeModal={toggleModalEdit} selectedAppointment={selectedAppointment} />
+      )}
+      {selectedAppointmentId && (<AppointmentById closeModal={() => setSelectedAppointmentId(null)} appointmentId={selectedAppointmentId}
+  />
+)}
     </main>
   );
 }
