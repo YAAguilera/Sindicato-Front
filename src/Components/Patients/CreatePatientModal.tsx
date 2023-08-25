@@ -72,7 +72,7 @@ const CreatePatient: React.FC<CreatePatientProps> = ({ closeModal }) => {
           <input type="text" placeholder=" Nombre" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('name', {
              required: 'Este campo es obligatorio',
              pattern: {
-              value: /^[a-zA-Z\s]+$/,
+              value: /^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ]+$/,
               message: 'Solo se aceptan letras',
             },
           }) 
@@ -87,7 +87,7 @@ const CreatePatient: React.FC<CreatePatientProps> = ({ closeModal }) => {
           <input type="text"  placeholder=" Apellido" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('lastname', {
              required: 'Este campo es obligatorio',
              pattern: {
-              value: /^[a-zA-Z\s]+$/,
+              value: /^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ]+$/,
               message: 'Solo se aceptan letras',
             },
           }) 
@@ -114,16 +114,56 @@ const CreatePatient: React.FC<CreatePatientProps> = ({ closeModal }) => {
               ) : (
                 <></>
               )}
-          <input type="text" placeholder=" Obra social" className="p-1 rounded-lg bg-lightGray placeholder-black" {...register('insurance', {
-             required: 'Este campo es obligatorio',
-             pattern: {
-              value: /^[a-zA-Z\s]+$/,
-              message: 'Solo se aceptan letras',
-            },
-          }) 
-        }
-        onBlur={() => handleBlur('insurance')}
-        />
+          <input
+  type="text"
+  placeholder=" Obra social"
+  className="p-1 rounded-lg bg-lightGray placeholder-black"
+  {...register('insurance', {
+    required: 'Este campo es obligatorio',
+    pattern: {
+      value: /^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ]+$/,
+      message: 'Solo se aceptan letras',
+    },
+  })}
+  onBlur={() => handleBlur('insurance')}
+  list="insuranceOptions" // Asociamos el input con el datalist
+/>
+
+{/* Datalist con opciones */}
+<datalist id="insuranceOptions">
+  <option value="Amsterdam" />
+  <option value="Acindar" />
+  <option value="Afiliado" />
+  <option value="Avalian" />
+  <option value="Bco Prov" />
+  <option value="Famyl" />
+  <option value="Federada" />
+  <option value="Galeno" />
+  <option value="Gsn" />
+  <option value="Ioma" />
+  <option value="Iosfa" />
+  <option value="Jerarquicos" />
+  <option value="Lyf" />
+  <option value="Lpf" />
+  <option value="Medlife" />
+  <option value="Osam" />
+  <option value="Osalara" />
+  <option value="Osecac" />
+  <option value="Ospapel" />
+  <option value="Uom" />
+  <option value="Ospecom" />
+  <option value="Ospena" />
+  <option value="Ospegype" />
+  <option value="Osap" />
+  <option value="Osde" />
+  <option value="Prevencion" />
+  <option value="Pami" />
+  <option value="Particular" />
+  <option value="Sancor" />
+  <option value="Sind Carne" />
+  <option value="Swiss med" />
+  {/* Agrega más opciones según sea necesario */}
+</datalist>
          {errors.insurance ? (
                 <span className='text-red-500 text-xs text-center '>{errors.insurance.message}</span>
               ) : (

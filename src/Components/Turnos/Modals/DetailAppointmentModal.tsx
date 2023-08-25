@@ -35,6 +35,15 @@ interface AppointmentByIdProps {
     appointmentId: string;
   }
 
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are 0-based
+    const year = date.getFullYear();
+  
+    return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+  };
+
   const AppointmentById: React.FC<AppointmentByIdProps> = ({ closeModal, appointmentId }) => {
     const dispatch=useDispatch<AppDispatch>()
     const selectedAppointment = useSelector((state: RootState) => state.appointment.appointments.find(app => app.id === appointmentId));
@@ -44,6 +53,11 @@ interface AppointmentByIdProps {
           dispatch(getAppointmentById({id: appointmentId}));
         }
       }, [dispatch, selectedAppointment, appointmentId]);
+
+      console.log("selected",selectedAppointment?.fecha);
+
+      const filteredApp= formatDate(selectedAppointment!.fecha)
+      
       
       
   return (
@@ -63,7 +77,7 @@ interface AppointmentByIdProps {
           <h1>Teléfono: {selectedAppointment.Paciente?.cel}</h1>
           <h1>Doctor: {selectedAppointment.Doctor?.name}{selectedAppointment.Doctor?.lastname}</h1>
           <h1>Especialidad: {selectedAppointment.Doctor?.speciality}</h1>
-          <h1>Fecha y horario: {selectedAppointment.fecha} {selectedAppointment.hora}</h1>
+          <h1>Fecha y horario: {filteredApp} {selectedAppointment.hora}</h1>
         </div>
       )}
       </section>
