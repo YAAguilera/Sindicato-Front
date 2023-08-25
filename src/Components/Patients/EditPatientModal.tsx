@@ -1,9 +1,9 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GrClose } from 'react-icons/gr';
 import { getPatients, putPatients } from '../../Features/Services/patients';
-import { AppDispatch } from '../../Features/store/store';
+import { AppDispatch, RootState } from '../../Features/store/store';
 
 interface Patient {
     id: number;
@@ -36,6 +36,8 @@ interface editPatientProps {
   
 
     const dispatch=useDispatch<AppDispatch>()
+
+    const loading = useSelector((state:RootState)=>state.patient.status)
 
     const initialValues: PatientFormData = {
         id: typeof selectedPatient?.id === 'number' ? selectedPatient.id : 0,
@@ -119,7 +121,7 @@ interface editPatientProps {
            type="submit"
           className="p-2 bg-darkBlue rounded-xl text-white font-serif font-semibold transition-all duration-500 ease-in-out hover:transform hover:scale-110"
         >
-          Editar
+          {loading==='loading'  ? "Editando...": "Editar" }
         </button>
       </form>
     </section>

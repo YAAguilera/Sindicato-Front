@@ -8,6 +8,7 @@ import { AppDispatch, RootState } from '../../Features/store/store';
 import { getPatients, deletePatient } from '../../Features/Services/patients';
 import { TiDelete, TiPencil } from "react-icons/ti";
 import EditPatient from './EditPatientModal';
+import Swal from 'sweetalert2'
 
 interface CreatePatientProps {
   closeModal: () => void;
@@ -42,11 +43,22 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
   //delete
   const handleDelete = async (id: number) => {
     try {
-     const response = await dispatch(deletePatient({id}));
-     console.log(response);
+      const result = await Swal.fire({
+        title:
+          "¿Estás seguro que quieres eliminar este paciente? Esta acción no se puede deshacer.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+      });
+      if (result.isConfirmed) {
+        const response = await dispatch(deletePatient({id}));
+        console.log(response);
     if(response.type === 'patients/deletePatient/fulfilled'){
         await dispatch(getPatients()) 
     }
+      }  
     } catch (error) {
       console.error("Error deleting patient:", error);
     }
@@ -65,8 +77,7 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
 
   return (
     <main className="fixed inset-0 flex flex-col justify-center items-center bg-lightGray bg-opacity-50 p-8">
-      <section className='bg-white w-full h-full rounded-xl'>
-        <div className='flex flex-col justify-start items-center bg-lightBlue w-full h-[6em] rounded-t-lg'>
+      <div className='flex flex-col justify-start items-center bg-lightBlue w-full h-[6em] rounded-t-lg'>
           <div className="flex items-center justify-end w-full p-3">
             <button className="" onClick={closeModal}>
               <GrClose />
@@ -74,17 +85,17 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
           </div>
           <h1 className="font-extrabold text-4xl font-serif text-darkBlue ">Pacientes</h1>
         </div>
-
-        <div className='w-full h-[1px] bg-darkBlue'></div>
-        <section className='overflow-y-scroll flex flex-col gap-2 items-center align-middle'>
+      <section className='bg-lightGray overflow-y-scroll w-full h-full rounded-b-xl'>
+        <div className='w-full  h-[1px] bg-darkBlue'></div>
+        <section className=' flex flex-col gap-2 p-2 items-center align-middle'>
           {alphabeticalPatients && alphabeticalPatients.length > 0 ? (
             alphabeticalPatients.map((patient: any) => {
               return (
-                <article key={patient.id} className='w-full flex flex-row justify-between items-center align-middle h-[2em] bg-lightGray p-7 text-center '>
-                  <h1 className='font-semibold font-serif xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs'>{patient.lastname} {patient.name}</h1>
-                  <h1 className='xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs font-semibold font-serif '>{patient.id} </h1>
-                  <h1 className='xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs font-semibold font-serif '>{patient.cel}</h1>
-                  <h1 className='xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs font-semibold font-serif '>{patient.insurance}</h1>
+                <article key={patient.id} className='w-full flex rounded-xl flex-row justify-between items-center align-middle h-[2em] bg-white p-7 text-center '>
+                  <h1 className='font-semibold  xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs'>{patient.lastname} {patient.name}</h1>
+                  <h1 className='xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs font-semibold  '>{patient.id} </h1>
+                  <h1 className='xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs font-semibold  '>{patient.insurance}</h1>
+                  <h1 className='xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs font-semibold  '>{patient.cel}</h1>
                   <div className=''>
                     <button >
                       <TiPencil className=' text-black xxl:text-4xl

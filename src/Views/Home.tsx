@@ -13,7 +13,7 @@ const Home = () => {
           sm:flex-col sm:items-center
           ">
              <AppointmentTable/>
-             <DoctorTable/>
+             <DoctorTable />
           </article>
     </main>
   )

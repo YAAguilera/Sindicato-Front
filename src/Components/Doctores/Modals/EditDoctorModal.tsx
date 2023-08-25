@@ -1,9 +1,9 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GrClose } from 'react-icons/gr';
 import { getDoctors, putDoctors } from '../../../Features/Services/doctors';
-import { AppDispatch } from '../../../Features/store/store';
+import { AppDispatch, RootState } from '../../../Features/store/store';
 
 export interface Doctor {
     id: string;
@@ -31,6 +31,7 @@ interface editDoctorProps {
       trigger(fieldName);
     };
   
+    const loading = useSelector((state:RootState)=>state.doctor.status)
 
     const dispatch=useDispatch<AppDispatch>()
 
@@ -102,7 +103,7 @@ interface editDoctorProps {
           
           className="p-2 bg-darkBlue rounded-xl text-white font-serif font-semibold transition-all duration-500 ease-in-out hover:transform hover:scale-110"
         >
-          Editar
+          {loading==='loading'  ? "Editando...": "Editar" }
         </button>
       </form>
     </section>

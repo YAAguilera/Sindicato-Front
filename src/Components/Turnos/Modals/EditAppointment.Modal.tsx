@@ -46,6 +46,7 @@ interface editAppointmentProps {
 
     const doctors = useSelector((state: RootState)=> state.doctor.doctors)
   
+    const loading = useSelector((state:RootState)=>state.appointment.status)
 
     const dispatch=useDispatch<AppDispatch>()
 
@@ -137,7 +138,7 @@ interface editAppointmentProps {
            type="submit"
           className="p-2 bg-darkBlue rounded-xl text-white font-serif font-semibold transition-all duration-500 ease-in-out hover:transform hover:scale-110"
         >
-          Editar
+          {loading==='loading'  ? "Editando...": "Editar" }
         </button>
       </form>
     </section>

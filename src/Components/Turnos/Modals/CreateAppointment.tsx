@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { GrClose } from 'react-icons/gr';
 import { useDispatch } from 'react-redux';
@@ -37,12 +37,12 @@ interface AppointmentFormData {
 
 const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => {
   const { register, handleSubmit, formState } = useForm<AppointmentFormData>();
-  // const handleBlur = (fieldName: any) => {
-  //   trigger(fieldName);
-  // };
-
+  const [Color, setColor] = useState("")
+  const [error,setError] = useState(false)
+ 
   const doctors = useSelector((state: RootState)=> state.doctor.doctors)
   const loading = useSelector((state:RootState)=>state.appointment.status)
+  const patients = useSelector((state:RootState)=> state.patient.patients)
   const dispatch=useDispatch<AppDispatch>()
 
   console.log(doctors)
@@ -64,6 +64,26 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
      }
   };
 
+  const onSearchPatient = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+  
+    // Convertir el valor ingresado a número
+    const inputValueAsNumber = parseInt(value, 10);
+  
+    // Verificar si el valor ingresado coincide con algún ID de paciente
+    const patientFound = patients.find(patient => patient.id === inputValueAsNumber);
+  
+    if (patientFound) {
+      console.log('Paciente encontrado:', patientFound);
+      setColor('green')
+      setError(false)
+    } else {
+      console.log('Paciente no encontrado');
+      setColor('red')
+      setError(true)
+    }
+  }
+
 
 
   return (
@@ -76,17 +96,37 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
         </div>
         <h1 className="font-extrabold text-2xl font-serif text-white">Crear Turno</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <input type="text" {...register('pacienteId')} placeholder=" DNI" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <select id="" {...register('doctorId')}>
-            <option value="" disabled={true}>Seleccione un doctor</option>
+        <input
+  type="text"
+  {...register('pacienteId')}
+  onChange={onSearchPatient}
+  placeholder="DNI"
+  className={`bg-lightGray rounded-lg p-1 transition-all duration-300 ease-in-out border-2 ${
+    error ? 'border-red-500' : `border-${Color}-500`
+  } focus:outline-none focus:ring-0`}
+/>
+{error && (
+  <div className="text-red-500">No se encuentra al paciente</div>
+)}
+          <select id="" {...register('doctorId',{
+           required: 'Este campo es obligatorio'
+            })}>
+            <option value="" disabled={true} selected>Seleccione un doctor</option>
             {doctors.map((doctor: any)=>{
               return(
                <option key={doctor.id} value={doctor.id}>{doctor.name+" "+doctor.lastname}</option>
               )
             })}
           </select>
-          <input type="date" {...register('fecha')} placeholder=" Fecha" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <input type="text" {...register('hora')} placeholder=" Hora" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+          
+          <input type="date" {...register('fecha',{
+             required: 'Este campo es obligatorio'}
+          )} placeholder=" Fecha" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+
+          <input type="text" {...register('hora', 
+          {required: 'Este campo es obligatorio'}
+          )} placeholder=" Hora" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+
           <button
             type="submit"
             disabled={formState.isSubmitting}

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GrClose } from 'react-icons/gr';
 import { postDoctors } from '../../../Features/Services/doctors';
-import { AppDispatch } from '../../../Features/store/store';
+import { AppDispatch, RootState } from '../../../Features/store/store';
 
 interface CreateDoctorProps {
   closeModal: () => void;
@@ -24,6 +24,8 @@ const CreateDoctor: React.FC<CreateDoctorProps> = ({ closeModal }) => {
   };
 
   const dispatch=useDispatch<AppDispatch>()
+
+  const loading = useSelector((state:RootState)=>state.doctor.status)
 
   //Post
   const onSubmit = async (data: DoctorFormData) => {
@@ -117,7 +119,7 @@ const CreateDoctor: React.FC<CreateDoctorProps> = ({ closeModal }) => {
             disabled={formState.isSubmitting}
             className="p-2 bg-darkBlue rounded-xl text-white font-serif font-semibold transition-all duration-500 ease-in-out hover:transform hover:scale-110"
           >
-            Crear
+            {loading==='loading'  ? "Creando...": "Crear" }
           </button>
         </form>
       </section>
