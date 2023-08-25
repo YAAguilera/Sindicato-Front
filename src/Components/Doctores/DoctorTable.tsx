@@ -42,6 +42,16 @@ const DoctorTable: React.FC = () => {
     dispatch(getPatients())
   }, [dispatch]);
 
+
+  const alphabeticalDoctors = doctors.slice().sort((a, b) => {
+    const lastNameComparison = a.name.localeCompare(b.name);
+    if (lastNameComparison === 0) {
+      return a.lastname.localeCompare(b.lastname);
+    }
+    return lastNameComparison;
+  });
+  console.log("ordenados",alphabeticalDoctors);
+  
   //delete
   const handleDelete = async (id: string) => {
     try {
@@ -92,8 +102,8 @@ const DoctorTable: React.FC = () => {
         ">Doctores</h1>
       </div>
       <div className='overflow-y-scroll   w-full flex flex-col items-center gap-2 p-1'>
-      {doctors && doctors.length>0 ?(
-        doctors.map((doctor:any)=>{
+      {alphabeticalDoctors && alphabeticalDoctors.length>0 ?(
+        alphabeticalDoctors.map((doctor:any)=>{
           return(
             <article key={doctor.id} className='bg-white rounded-xl w-[100%] flex flex-row justify-center items-center 
             xxl:gap-8

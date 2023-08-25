@@ -9,6 +9,7 @@ import { getPatients, deletePatient } from '../../Features/Services/patients';
 import { TiDelete, TiPencil } from "react-icons/ti";
 import EditPatient from './EditPatientModal';
 import Swal from 'sweetalert2'
+import SearchBar from '../Assets/SearchBar'
 
 interface CreatePatientProps {
   closeModal: () => void;
@@ -27,6 +28,7 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
   const patients = useSelector((state: RootState) => state.patient.patients);
   console.log("", patients);
   const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     dispatch(getPatients());
@@ -39,6 +41,10 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
     }
     return lastNameComparison;
   });
+
+  const handleSearch = (event:any) => {
+    setSearchTerm(event.target.value);
+  };
   
   //delete
   const handleDelete = async (id: number) => {
@@ -75,6 +81,18 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
     toggleModalEdit();
   };
 
+  const filteredPatients = alphabeticalPatients.filter((patient) => {
+    const searchTermLower = searchTerm.toLowerCase();
+    
+    // Comprobación de coincidencia en nombre, ID y apellido
+    const nameMatches = patient.name.toLowerCase().includes(searchTermLower);
+    const idMatches = patient.id.toString().includes(searchTermLower);
+    const lastnameMatches = patient.lastname.toLowerCase().includes(searchTermLower);
+  
+    // Devuelve true si alguna de las condiciones coincide
+    return nameMatches || idMatches || lastnameMatches;
+  });
+
   return (
     <main className="fixed inset-0 flex flex-col justify-center items-center bg-lightGray bg-opacity-50 p-8">
       <div className='flex flex-col justify-start items-center bg-lightBlue w-full h-[6em] rounded-t-lg'>
@@ -83,13 +101,16 @@ const allPatients: React.FC<CreatePatientProps> = ({ closeModal }) => {
               <GrClose />
             </button>
           </div>
+          <div className='flex flex-row gap-5 items-center justify-center'>
           <h1 className="font-extrabold text-4xl font-serif text-darkBlue ">Pacientes</h1>
+          <SearchBar searchTerm={searchTerm} onSearch={handleSearch}/>
+          </div>
         </div>
       <section className='bg-lightGray overflow-y-scroll w-full h-full rounded-b-xl'>
         <div className='w-full  h-[1px] bg-darkBlue'></div>
         <section className=' flex flex-col gap-2 p-2 items-center align-middle'>
-          {alphabeticalPatients && alphabeticalPatients.length > 0 ? (
-            alphabeticalPatients.map((patient: any) => {
+          {filteredPatients && filteredPatients.length > 0 ? (
+            filteredPatients.map((patient: any) => {
               return (
                 <article key={patient.id} className='w-full flex rounded-xl flex-row justify-between items-center align-middle h-[2em] bg-white p-7 text-center '>
                   <h1 className='font-semibold  xxl:text-xl xl:text-lg lg:text-md md:text-sm sm:text-xs'>{patient.lastname} {patient.name}</h1>
