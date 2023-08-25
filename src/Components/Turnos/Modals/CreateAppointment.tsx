@@ -39,10 +39,7 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
   const { register, handleSubmit, formState } = useForm<AppointmentFormData>();
   const [Color, setColor] = useState("")
   const [error,setError] = useState(false)
-  // const handleBlur = (fieldName: any) => {
-  //   trigger(fieldName);
-  // };
-
+ 
   const doctors = useSelector((state: RootState)=> state.doctor.doctors)
   const loading = useSelector((state:RootState)=>state.appointment.status)
   const patients = useSelector((state:RootState)=> state.patient.patients)
@@ -104,23 +101,32 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
   {...register('pacienteId')}
   onChange={onSearchPatient}
   placeholder="DNI"
-  className={`p-1 transition-all duration-300 ease-in-out border-2 ${
+  className={`bg-lightGray rounded-lg p-1 transition-all duration-300 ease-in-out border-2 ${
     error ? 'border-red-500' : `border-${Color}-500`
   } focus:outline-none focus:ring-0`}
 />
 {error && (
   <div className="text-red-500">No se encuentra al paciente</div>
 )}
-          <select id="" {...register('doctorId')}>
-            <option value="" disabled={true}>Seleccione un doctor</option>
+          <select id="" {...register('doctorId',{
+           required: 'Este campo es obligatorio'
+            })}>
+            <option value="" disabled={true} selected>Seleccione un doctor</option>
             {doctors.map((doctor: any)=>{
               return(
                <option key={doctor.id} value={doctor.id}>{doctor.name+" "+doctor.lastname}</option>
               )
             })}
           </select>
-          <input type="date" {...register('fecha')} placeholder=" Fecha" className="p-1 rounded-lg bg-lightGray placeholder-black" />
-          <input type="text" {...register('hora')} placeholder=" Hora" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+          
+          <input type="date" {...register('fecha',{
+             required: 'Este campo es obligatorio'}
+          )} placeholder=" Fecha" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+
+          <input type="text" {...register('hora', 
+          {required: 'Este campo es obligatorio'}
+          )} placeholder=" Hora" className="p-1 rounded-lg bg-lightGray placeholder-black" />
+
           <button
             type="submit"
             disabled={formState.isSubmitting}

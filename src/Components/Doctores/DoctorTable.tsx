@@ -103,9 +103,9 @@ const DoctorTable: React.FC = () => {
             sm:gap-2
             '>
             <div className='flex flex-col justify-center items-center'>
-            <h1 className='font-bold text-center
-            xxl:text-2xl
-            xl:text-2xl
+            <h1 className='font-semibold text-center
+            xxl:text-xl
+            xl:text-xl
             lg:text-lg
             md:text-sm
             sm:text-md

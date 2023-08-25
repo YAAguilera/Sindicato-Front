@@ -3,7 +3,9 @@ import { useForm } from 'react-hook-form';
 import { GrClose } from 'react-icons/gr';
 import { useDispatch } from 'react-redux';
 import { postPatient } from '../../Features/Services/patients';
-import { AppDispatch } from '../../Features/store/store';
+import { AppDispatch, RootState } from '../../Features/store/store';
+import { useSelector } from 'react-redux';
+
 
 interface CreatePatientProps {
   closeModal: () => void;
@@ -24,6 +26,8 @@ const CreatePatient: React.FC<CreatePatientProps> = ({ closeModal }) => {
   };
   
   const dispatch=useDispatch<AppDispatch>()
+
+  const loading = useSelector((state:RootState)=>state.patient.status)
 
   //Post
   const onSubmit= async (formData: PatientFormData) => {
@@ -130,7 +134,7 @@ const CreatePatient: React.FC<CreatePatientProps> = ({ closeModal }) => {
             disabled={formState.isSubmitting}
             className="p-2 bg-darkBlue rounded-xl text-white font-serif font-semibold transition-all duration-500 ease-in-out hover:transform hover:scale-110"
           >
-            Crear
+            {loading==='loading'  ? "Creando...": "Crear" }
           </button>
         </form>
       </section>

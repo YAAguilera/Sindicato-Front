@@ -1,6 +1,6 @@
 import  Swal  from 'sweetalert2';
 import { createSlice } from '@reduxjs/toolkit';
-import { getAppointments, postAppointment, deleteAppointments } from '../Services/appointment';
+import { getAppointments, postAppointment, deleteAppointments, putAppointment } from '../Services/appointment';
 
 interface Doctor {
     id: string;
@@ -95,8 +95,11 @@ const appointmentSlice = createSlice({
 
         Toast.fire({
           icon: "success",
-          title: "Turno creado con éxito!",
+          title: "Turno completado con éxito!",
         });
+      })
+      .addCase(putAppointment.fulfilled, (state)=>{
+        state.status='fulfilled'
       })
   },
 });

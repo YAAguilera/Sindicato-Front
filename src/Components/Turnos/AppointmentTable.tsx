@@ -8,6 +8,7 @@ import { getAppointments, deleteAppointments } from '../../Features/Services/app
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../Features/store/store';
 import { useSelector } from 'react-redux';
+import EditAppointment from './Modals/EditAppointment.Modal';
 import Swal from 'sweetalert2';
 
 
@@ -36,6 +37,16 @@ export interface Appointment {
   Doctor: Doctor
 }
 
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Months are 0-based
+  const year = date.getFullYear();
+
+  return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+};
+
+
 const AppointmentTable: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPatientModalOpen, setIsPatientModalOpen] = useState<boolean>(false); // Agrega un estado para el modal de creación de pacientes
@@ -53,17 +64,28 @@ const AppointmentTable: React.FC = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const appointments = useSelector((state: RootState) => state.appointment.appointments);
-  console.log("", appointments);
+  
 
   useEffect(()=>{
     dispatch(getAppointments())
   }, [dispatch])
 
-  const sortedAppointments = appointments?.slice().sort((a, b) => {
-    const dateA = new Date(a?.fecha + ' ' + a?.hora);
-    const dateB = new Date(b?.fecha + ' ' + b?.hora);
-    return dateA.getTime() - dateB.getTime();
-  });
+
+  const sortedAppointments = appointments
+    ?.slice()
+    .sort((a, b) => {
+      const dateA = new Date(a?.fecha + ' ' + a?.hora);
+      const dateB = new Date(b?.fecha + ' ' + b?.hora);
+      return dateA.getTime() - dateB.getTime();
+    })
+    .map((appointment) => ({
+      ...appointment,
+      formattedFecha: formatDate(appointment.fecha), // Add the formatted date property
+    }));
+   
+
+    console.log("este es sorted app",sortedAppointments);
+    
   
   //delete
   const handleDelete = async (id: string) => {
@@ -71,10 +93,10 @@ const AppointmentTable: React.FC = () => {
 
       const result = await Swal.fire({
         title:
-          "¿Estás seguro que quieres eliminar este turno? Esta acción no se puede deshacer.",
+          "¿Estás seguro que quieres completar este turno? Al hacer esto se borrara y no se puede deshacer.",
         icon: "question",
         showCancelButton: true,
-        confirmButtonText: "Sí, eliminar",
+        confirmButtonText: "Sí, completar",
         cancelButtonText: "Cancelar",
         reverseButtons: true,
       });
@@ -90,6 +112,17 @@ const AppointmentTable: React.FC = () => {
     }
   };
 
+  //edit
+  const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+
+  const toggleModalEdit = () => {
+    setIsModalOpenEdit(!isModalOpenEdit);
+  };
+  const handleEdit = (appointment: Appointment) => {
+    setSelectedAppointment(appointment);
+    toggleModalEdit();
+  };
   return (
     <main className="flex flex-col h-full justify-center items-center align-middle
     xxl:w-[70%] 
@@ -117,20 +150,21 @@ const AppointmentTable: React.FC = () => {
         <section className=' flex  flex-col p-2 gap-2 items-center align-middle'>
         {sortedAppointments.map(appointment => (
             <article key={appointment.id} className='w-full flex flex-row justify-between items-center align-middle h-[2em] bg-white rounded-xl p-7 text-center '>
-              <h1>{appointment.Paciente?.lastname} {appointment.Paciente?.name}</h1>
-              <h1>{appointment.Paciente?.insurance}</h1>
+              <h1 className='font-bold'>{appointment.Paciente?.lastname} {appointment.Paciente?.name}</h1>
+              <h1 className='font-semibold'>{appointment.Paciente?.insurance}</h1>
               <div className='flex flex-col'>
-              <h1>{appointment?.fecha}</h1>
-              <h1>{appointment?.hora}</h1>
+              <h1 className='font-bold'>{appointment?.formattedFecha}</h1>
+              <h1 className='font-bold '>{appointment?.hora}</h1>
               </div>
-              <h1>{appointment?.Doctor?.name} {appointment.Doctor?.lastname}</h1>
+              <h1 className='font-semibold'>{appointment?.Doctor?.name} {appointment.Doctor?.lastname}</h1>
               <div className='flex flex-row gap-3'>
                     <button >
                       <TiPencil className=' text-black xxl:text-4xl
                 xl:text-3xl
                 lg:text-2xl
                 md:text-xl
-                sm:text-2xl'/>
+                sm:text-2xl'
+                onClick={() => handleEdit(appointment)}/>
                     </button>
                     <button >
                       <FcCheckmark onClick={() => handleDelete(appointment.id)} className='xxl:text-4xl
@@ -138,7 +172,7 @@ const AppointmentTable: React.FC = () => {
                       lg:text-2xl
                       md:text-xl
                       sm:text-2xl
-                      transition-all duration-500 ease-in-out hover:transform hover:scale-125
+                      transition-all duration-500 ease-in-out hover:transform hover:scale-125 
                       ' />
                     </button>
                   </div>
@@ -192,7 +226,7 @@ const AppointmentTable: React.FC = () => {
       {isModalOpen && <CreateAppointment closeModal={toggleModal} />}
       {isPatientModalOpen && <CreatePatient closeModal={togglePatientModal} />} 
       {isGetPatsModalOpen && <AllPatientsComponent closeModal={toggleGetPatsModal}/>} 
-
+      {isModalOpenEdit && <EditAppointment closeModal={toggleModalEdit} selectedAppointment={selectedAppointment} />}
     </main>
   );
 }
