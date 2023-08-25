@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../Features/store/store';
 import { useSelector } from 'react-redux';
 import EditAppointment from './Modals/EditAppointment.Modal';
+import AppointmentById from './Modals/DetailAppointmentModal';
 import Swal from 'sweetalert2';
 
 
@@ -116,13 +117,25 @@ const AppointmentTable: React.FC = () => {
   const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
 
+
   const toggleModalEdit = () => {
     setIsModalOpenEdit(!isModalOpenEdit);
   };
+
   const handleEdit = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
     toggleModalEdit();
   };
+
+
+  //detail
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState<string | null>(null);
+
+  const handleClickArticle = (appointmentId: string) => {
+    setSelectedAppointmentId(appointmentId);
+  };
+
+
   return (
     <main className="flex flex-col h-full justify-center items-center align-middle
     xxl:w-[70%] 
@@ -147,9 +160,13 @@ const AppointmentTable: React.FC = () => {
     </div>
       <section className='bg-lightGray w-full h-[87%] overflow-y-scroll  rounded-b-xl'> 
         
-        <section className=' flex  flex-col p-2 gap-2 items-center align-middle'>
+        <section 
+        
+        className=' flex  flex-col p-2 gap-2 items-center align-middle'>
         {sortedAppointments.map(appointment => (
-            <article key={appointment.id} className='w-full flex flex-row justify-between items-center align-middle h-[2em] bg-white rounded-xl p-7 text-center '>
+            <article
+            key={appointment.id} className='w-full flex flex-row items-center align-middle h-[2em] bg-white rounded-xl p-7 text-center xxl:gap-20 xl:gap-16 lg:gap-10 md:gap-8'>
+              <div onClick={() => handleClickArticle(appointment.id)} className='w-full flex flex-row justify-between items-center align-middle text-center'>
               <h1 className='font-bold'>{appointment.Paciente?.lastname} {appointment.Paciente?.name}</h1>
               <h1 className='font-semibold'>{appointment.Paciente?.insurance}</h1>
               <div className='flex flex-col'>
@@ -157,6 +174,7 @@ const AppointmentTable: React.FC = () => {
               <h1 className='font-bold '>{appointment?.hora}</h1>
               </div>
               <h1 className='font-semibold'>{appointment?.Doctor?.name} {appointment.Doctor?.lastname}</h1>
+              </div>
               <div className='flex flex-row gap-3'>
                     <button >
                       <TiPencil className=' text-black xxl:text-4xl
@@ -226,7 +244,12 @@ const AppointmentTable: React.FC = () => {
       {isModalOpen && <CreateAppointment closeModal={toggleModal} />}
       {isPatientModalOpen && <CreatePatient closeModal={togglePatientModal} />} 
       {isGetPatsModalOpen && <AllPatientsComponent closeModal={toggleGetPatsModal}/>} 
-      {isModalOpenEdit && <EditAppointment closeModal={toggleModalEdit} selectedAppointment={selectedAppointment} />}
+      {isModalOpenEdit && selectedAppointment && (
+        <EditAppointment closeModal={toggleModalEdit} selectedAppointment={selectedAppointment} />
+      )}
+      {selectedAppointmentId && (<AppointmentById closeModal={() => setSelectedAppointmentId(null)} appointmentId={selectedAppointmentId}
+  />
+)}
     </main>
   );
 }
