@@ -67,7 +67,7 @@ const DoctorAppointmentsTable: React.FC<DoctorAppointmentsTableProps> = ({ appoi
     
     
   return (
-    <div className="flex m-auto justify-center items-center h-full w-[50%]">
+    <div className="flex  m-auto justify-center items-center h-full w-[50%]">
     {rows.length === 0 ? (
       <p className="text-center text-white font-semibold text-2xl">No hay turnos para este doctor el día de hoy.</p>
     ) : (

@@ -56,6 +56,22 @@ const DoctorPrint = () => {
   const formattedAppointmentsToday = formattedAppointments.filter(appointment => {
     return appointment.fecha === currentDate;
   });
+  formattedAppointmentsToday.sort((a, b) => {
+    const horaA = a.hora;
+    const horaB = b.hora;
+    
+    // Aquí estamos comparando las horas en formato HH:MM:SS.
+    // Si las horas son iguales, se comparan los minutos.
+    // Si los minutos son iguales, se comparan los segundos.
+    if (horaA < horaB) {
+        return -1;
+    }
+    if (horaA > horaB) {
+        return 1;
+    }
+    return 0;
+});
+
 
   console.log("format",formattedAppointmentsToday);
 //@ts-ignore
@@ -70,7 +86,7 @@ const DoctorPrint = () => {
   })
   
   return (
-    <main className='flex flex-col justify-center items-center bg-gradient-to-t from-lightBlue to-darkBlue w-screen xxl:h-screen xl:h-screen lg:h-screen md:h-screen sm:h-screen '>
+    <main className='flex overflow-hidden flex-col justify-center items-center bg-gradient-to-t from-lightBlue to-darkBlue w-screen xxl:h-full xl:h-full lg:h-full md:h-full sm:h-full '>
         
         <section className='flex flex-col justify-center gap-9 items-center'>
         {doctorName ?(<h1 className='xxl:text-4xl
