@@ -71,7 +71,6 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
   
     // Convertir el valor ingresado a número
     const inputValueAsNumber = parseInt(value, 10);
-    const name=""
   
     // Verificar si el valor ingresado coincide con algún ID de paciente
     const patientFound = patients.find(patient => patient.id === inputValueAsNumber);
