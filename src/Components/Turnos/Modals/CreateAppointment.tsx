@@ -38,6 +38,8 @@ interface AppointmentFormData {
 const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => {
   const { register, handleSubmit, formState } = useForm<AppointmentFormData>();
   const [Color, setColor] = useState("")
+  const [name, setName]=useState("")
+  const [lastname, setLastName]=useState("")
   const [error,setError] = useState(false)
  
   const doctors = useSelector((state: RootState)=> state.doctor.doctors)
@@ -69,21 +71,30 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
   
     // Convertir el valor ingresado a número
     const inputValueAsNumber = parseInt(value, 10);
+    const name=""
   
     // Verificar si el valor ingresado coincide con algún ID de paciente
     const patientFound = patients.find(patient => patient.id === inputValueAsNumber);
+    
   
     if (patientFound) {
       console.log('Paciente encontrado:', patientFound);
       setColor('green')
+      setName(patientFound.name)
+      setLastName(patientFound.lastname)
       setError(false)
     } else {
       console.log('Paciente no encontrado');
       setColor('red')
       setError(true)
+      setName("")
+      setLastName("")
     }
   }
-
+  console.log("nombre",name);
+  console.log("apellido", lastname);
+  
+  
 
 
   return (
@@ -105,9 +116,14 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ closeModal }) => 
     error ? 'border-red-500' : `border-${Color}-500`
   } focus:outline-none focus:ring-0`}
 />
-{error && (
+{error ? (
   <div className="text-red-500">No se encuentra al paciente</div>
+) : (
+  name && lastname && (
+    <div className='font-bold mx-auto'>Paciente: {name} {lastname}</div>
+  )
 )}
+
           <select id="" {...register('doctorId',{
            required: 'Este campo es obligatorio'
             })}>

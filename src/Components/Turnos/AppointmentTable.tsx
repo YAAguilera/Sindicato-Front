@@ -107,7 +107,7 @@ const AppointmentTable: React.FC = () => {
       return nameMatches || lastnameMatches;
     });
    
-    console.log("este es sorted app",sortedAppointments);
+    console.log("este es sorted app",filteredAppointments);
     
   
   //delete
@@ -187,7 +187,7 @@ const AppointmentTable: React.FC = () => {
         <section 
         
         className=' flex  flex-col p-2 gap-2 items-center align-middle'>
-        {sortedAppointments.map(appointment => (
+        {filteredAppointments.map(appointment => (
             <article
             key={appointment.id} className='w-full flex flex-row justify-between items-center align-middle h-[2em] bg-white rounded-xl p-7 text-center'>
               
