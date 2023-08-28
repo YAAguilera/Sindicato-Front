@@ -56,6 +56,22 @@ const DoctorPrint = () => {
   const formattedAppointmentsToday = formattedAppointments.filter(appointment => {
     return appointment.fecha === currentDate;
   });
+  formattedAppointmentsToday.sort((a, b) => {
+    const horaA = a.hora;
+    const horaB = b.hora;
+    
+    // Aquí estamos comparando las horas en formato HH:MM:SS.
+    // Si las horas son iguales, se comparan los minutos.
+    // Si los minutos son iguales, se comparan los segundos.
+    if (horaA < horaB) {
+        return -1;
+    }
+    if (horaA > horaB) {
+        return 1;
+    }
+    return 0;
+});
+
 
   console.log("format",formattedAppointmentsToday);
 //@ts-ignore
