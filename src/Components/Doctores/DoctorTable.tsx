@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import CreateDoctor from './Modals/DoctorModal';
 import { getDoctors, deleteDoctors } from '../../Features/Services/doctors';
 import { AppDispatch, RootState } from '../../Features/store/store';
-import { TiDelete, TiPencil } from "react-icons/ti";
+import { TiDelete, TiPencil, TiArrowForward } from "react-icons/ti";
 import EditDoctor from './Modals/EditDoctorModal';
 import Swal from 'sweetalert2';
 import { getPatients } from '../../Features/Services/patients';
+import { useNavigate } from 'react-router-dom';
+import { getAppointments } from '../../Features/Services/appointment';
 
 export interface Doctor {
   id: string;
@@ -19,6 +21,7 @@ const DoctorTable: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpenEdit, setIsModalOpenEdit] = useState<boolean>(false);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const navigate = useNavigate()
 
 
   const toggleModal = () => {
@@ -33,7 +36,9 @@ const DoctorTable: React.FC = () => {
     setSelectedDoctor(doctor);
     toggleModalEdit();
   };
-  
+  useEffect (()=>{
+    getAppointments()
+  })
   const dispatch = useDispatch<AppDispatch>();
   const doctors = useSelector((state:RootState) => state.doctor.doctors); 
    console.log("doctor table doctors",doctors)
@@ -75,6 +80,18 @@ const DoctorTable: React.FC = () => {
       console.error("Error deleting doctor:", error);
     }
   };
+
+  const handlePrint = async(id:string) =>{
+      try {
+
+        if(id){
+          navigate(`/doctor/${id}`)
+        }
+        
+      } catch (error) {
+        
+      }
+  }
   
   return (
     <main className="flex flex-col justify-center h-full  items-center align-middle gap-2 p-1 
@@ -141,6 +158,15 @@ const DoctorTable: React.FC = () => {
               </button>
               <button onClick={() => handleDelete(doctor.id)}>
                 <TiDelete className='text-red-800
+                xxl:text-4xl
+                xl:text-3xl
+                lg:text-2xl
+                md:text-xl
+                sm:text-2xl
+                '/>
+              </button>
+              <button onClick={() => handlePrint(doctor.id)}>
+                <TiArrowForward className='text-blue-800
                 xxl:text-4xl
                 xl:text-3xl
                 lg:text-2xl

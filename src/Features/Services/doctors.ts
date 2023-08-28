@@ -8,6 +8,13 @@ interface Doctor {
   speciality: string;
 }
 
+interface DoctorId {
+  id: string;
+  name: string;
+  lastname: string;
+  speciality:string;
+}
+
 export const getDoctors = createAsyncThunk<Doctor[], void, { rejectValue: string }>(
   'doctor/getDoctors',
   async (_, { rejectWithValue }) => {
@@ -74,3 +81,19 @@ export const putDoctors = createAsyncThunk<Doctor[], {  id: string, name: string
     }
   }
 ); 
+
+
+export const getDoctorsById = createAsyncThunk<DoctorId[], string>(
+  'doctor/getByIdDoctors',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get<DoctorId[]>(
+        `https://sindicato-back-35yh-sist-dev.fl0.io/doctors/${id}`
+      );
+      console.log("este es el response de getDoctorById", response.data)
+      return response.data;
+    } catch (error) {
+      return rejectWithValue('No se pudieron obtener los doctores.');
+    }
+  }
+);
