@@ -1,7 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getDoctors, postDoctors, deleteDoctors, putDoctors } from '../Services/doctors';
+import { getDoctors, postDoctors, deleteDoctors, putDoctors, getDoctorsById } from '../Services/doctors';
 import Swal from 'sweetalert2'
 interface Doctor {
+  id: string;
+  name: string;
+  lastname: string;
+  speciality:string;
+}
+
+interface DoctorId {
   id: string;
   name: string;
   lastname: string;
@@ -12,10 +19,15 @@ const doctorSlice = createSlice({
   name: 'doctor',
   initialState: {
     doctors: [] as Doctor[],
+    doctorId: [] as DoctorId[],
     status: 'idle',
     error: '',
   },
-  reducers: {},
+  reducers: {
+    resetDoctorId: (state) => {
+      state.doctorId = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDoctors.pending, (state) => {
@@ -28,6 +40,13 @@ const doctorSlice = createSlice({
       .addCase(getDoctors.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Error desconocido';
+      })
+      .addCase(getDoctorsById.rejected, (state)=>{
+        state.status = 'failed';
+      })
+      .addCase(getDoctorsById.fulfilled, (state, action)=>{
+        state.status = 'succeeded';
+        state.doctorId = action.payload;
       })
       .addCase(postDoctors.pending, (state) => {
         state.status = 'loading';
@@ -100,5 +119,6 @@ const doctorSlice = createSlice({
       })
   },
 });
+export const { resetDoctorId } = doctorSlice.actions;
 
 export default doctorSlice.reducer;

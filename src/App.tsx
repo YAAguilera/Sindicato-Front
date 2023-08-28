@@ -1,12 +1,17 @@
 import './App.css'
-import Home from '../src/Views/Home.tsx'
+import Home from '../src/Views/Home'
+import { Route, Routes, BrowserRouter } from 'react-router-dom'
+import DoctorPrint from './Components/Doctores/DoctorPrint'
 
 function App() {
 
   return (
-    <>
-       <Home/> 
-    </>
+    <BrowserRouter>
+  <Routes>
+       <Route path='/' Component={Home}/>
+       <Route path='/doctor/:id' Component={DoctorPrint}/>
+  </Routes>
+  </BrowserRouter>
   )
 }
 

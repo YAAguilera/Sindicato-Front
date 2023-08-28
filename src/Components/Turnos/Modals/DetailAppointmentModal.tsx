@@ -36,13 +36,14 @@ interface AppointmentByIdProps {
   }
 
   const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Months are 0-based
-    const year = date.getFullYear();
+    const date = new Date(dateString + "T00:00:00Z"); // Agregar hora y zona horaria UTC
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1; // Meses son indexados en 0
+    const year = date.getUTCFullYear();
   
     return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
-  };
+};
+
 
   const AppointmentById: React.FC<AppointmentByIdProps> = ({ closeModal, appointmentId }) => {
     const dispatch=useDispatch<AppDispatch>()
