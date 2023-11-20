@@ -31,7 +31,7 @@ export const getAppointments = createAsyncThunk<Appointment[], void, { rejectVal
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get<Appointment[]>(
-        'https://sindicato-back-35yh-sist-dev.fl0.io/appointments' 
+        'https://sindicato-back-dev-jspj.4.us-1.fl0.io/appointments' 
       );
       console.log("este es el response de getAppointments",response.data)
       return response.data; 
@@ -48,7 +48,7 @@ export const postAppointment = createAsyncThunk<Appointment[], { pacienteId:numb
       console.log("esto llega a ldipsatch", pacienteId, doctorId, hora, fecha);
       
       const response = await axios.post<Appointment[]>(
-        `https://sindicato-back-35yh-sist-dev.fl0.io/appointments/${pacienteId}`,
+        `https://sindicato-back-dev-jspj.4.us-1.fl0.io/appointments/${pacienteId}`,
         {
           doctorId,
           hora,
@@ -68,7 +68,7 @@ export const deleteAppointments = createAsyncThunk<Appointment[], {  id: string 
   async ( {id} , { rejectWithValue }) => {
     try {
       const response = await axios.delete<Appointment[]>(
-        `https://sindicato-back-35yh-sist-dev.fl0.io/appointments/${id}`
+        `https://sindicato-back-dev-jspj.4.us-1.fl0.io/appointments/${id}`
       );
       return response.data; 
     } catch (error) {
@@ -84,7 +84,7 @@ export const putAppointment = createAsyncThunk<Appointment[], { id: string, doct
       console.log(id);
       
       const response = await axios.put<Appointment[]>(
-        `https://sindicato-back-35yh-sist-dev.fl0.io/appointments/${id}`,{
+        `https://sindicato-back-dev-jspj.4.us-1.fl0.io/appointments/${id}`,{
           doctorId, fecha, hora
         }
       );
@@ -104,7 +104,7 @@ export const getAppointmentById = createAsyncThunk<Appointment[], { id: string }
       console.log(id);
       
       const response = await axios.get<Appointment[]>(
-        `https://sindicato-back-35yh-sist-dev.fl0.io/appointments/${id}`
+        `https://sindicato-back-dev-jspj.4.us-1.fl0.io/appointments/${id}`
       );
       console.log(response);
       

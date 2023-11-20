@@ -20,7 +20,7 @@ export const getDoctors = createAsyncThunk<Doctor[], void, { rejectValue: string
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get<Doctor[]>(
-        'https://sindicato-back-35yh-sist-dev.fl0.io/doctors' 
+        'https://sindicato-back-dev-jspj.4.us-1.fl0.io/doctors' 
       );
       console.log("este es el response de getDoctors",response.data)
       return response.data; 
@@ -35,7 +35,7 @@ export const postDoctors = createAsyncThunk<Doctor[], {  name: string; lastname:
   async ({ name, lastname, speciality }, { rejectWithValue }) => {
     try {
       const response = await axios.post<Doctor[]>(
-        'https://sindicato-back-35yh-sist-dev.fl0.io/doctors',
+        'https://sindicato-back-dev-jspj.4.us-1.fl0.io/doctors',
         {
           name,
           lastname,
@@ -55,7 +55,7 @@ export const deleteDoctors = createAsyncThunk<Doctor[], {  id: string }, { rejec
   async ( {id} , { rejectWithValue }) => {
     try {
       const response = await axios.delete<Doctor[]>(
-        `https://sindicato-back-35yh-sist-dev.fl0.io/doctors/${id}`
+        `https://sindicato-back-dev-jspj.4.us-1.fl0.io/doctors/${id}`
       );
       return response.data; 
     } catch (error) {
@@ -69,7 +69,7 @@ export const putDoctors = createAsyncThunk<Doctor[], {  id: string, name: string
   async ( {id, name, lastname, speciality } , { rejectWithValue }) => {
     try {
       const response = await axios.put<Doctor[]>(
-        `https://sindicato-back-35yh-sist-dev.fl0.io/doctors/${id}`,{
+        `https://sindicato-back-dev-jspj.4.us-1.fl0.io/doctors/${id}`,{
           name, lastname, speciality
         }
       );
@@ -88,7 +88,7 @@ export const getDoctorsById = createAsyncThunk<DoctorId[], string>(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get<DoctorId[]>(
-        `https://sindicato-back-35yh-sist-dev.fl0.io/doctors/${id}`
+        `https://sindicato-back-dev-jspj.4.us-1.fl0.io/doctors/${id}`
       );
       console.log("este es el response de getDoctorById", response.data)
       return response.data;

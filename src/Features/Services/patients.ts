@@ -14,7 +14,7 @@ export const getPatients = createAsyncThunk<Patient[], void, { rejectValue: stri
     async (_, { rejectWithValue }) => {
       try {
         const response = await axios.get<Patient[]>(
-          'https://sindicato-back-35yh-sist-dev.fl0.io/patients' 
+          'https://sindicato-back-dev-jspj.4.us-1.fl0.io/patients' 
         );
         console.log("este es el response de getPatient",response.data)
         return response.data; 
@@ -29,7 +29,7 @@ export const getPatients = createAsyncThunk<Patient[], void, { rejectValue: stri
     async ({ id, name, lastname, cel, insurance }, { rejectWithValue }) => {
       try {
         const response = await axios.post<Patient[]>(
-          'https://sindicato-back-35yh-sist-dev.fl0.io/patients',
+          'https://sindicato-back-dev-jspj.4.us-1.fl0.io/patients',
           {
             id,
             name,
@@ -51,7 +51,7 @@ export const getPatients = createAsyncThunk<Patient[], void, { rejectValue: stri
     async ( {id} , { rejectWithValue }) => {
       try {
         const response = await axios.delete<Patient[]>(
-          `https://sindicato-back-35yh-sist-dev.fl0.io/patients/${id}`
+          `https://sindicato-back-dev-jspj.4.us-1.fl0.io/patients/${id}`
         );
         return response.data; 
       } catch (error) {
@@ -65,7 +65,7 @@ export const getPatients = createAsyncThunk<Patient[], void, { rejectValue: stri
     async ( {id, name, lastname, cel, insurance } , { rejectWithValue }) => {
       try {
         const response = await axios.put<Patient[]>(
-          `https://sindicato-back-35yh-sist-dev.fl0.io/patients/${id}`,{
+          `https://sindicato-back-dev-jspj.4.us-1.fl0.io/patients/${id}`,{
             id, name, lastname, cel, insurance
           }
         );
